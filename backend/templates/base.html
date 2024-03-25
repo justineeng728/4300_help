@@ -48,13 +48,13 @@
         function filterText() {
             document.getElementById("answer-box").innerHTML = ""
             console.log(document.getElementById("filter-text-val").value)
-            fetch("/episodes?" + new URLSearchParams({ 
+            fetch("/tshirts_and_tops?" + new URLSearchParams({ 
                 title: document.getElementById("filter-text-val").value }).toString())
                 .then((response) => response.json())
                 .then((data) => data.forEach(row => {
 
                     let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.title, row.descr)
+                    tempDiv.innerHTML = answerBoxTemplate(row.Name, row.Description)
                     document.getElementById("answer-box").appendChild(tempDiv)
                 }));
 
