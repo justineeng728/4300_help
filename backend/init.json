@@ -1,4 +1,4 @@
-[
+{ "tshirts_and_tops" : [
   {
     "Name": "homestretch™ crew t-shirt",
     "Price": "25",
@@ -4192,3 +4192,4 @@
     "image URL": "https://aritzia.scene7.com/is/image/Aritzia/large/f23_07_a01_113337_1275_on_a.jpg"
   }
 ]
+}
