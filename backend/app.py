@@ -28,7 +28,9 @@ def json_search(query):
     matches = fashion_df[fashion_df['Name'].str.lower().str.contains(query.lower())]
     matches_filtered = matches[['Name', 'Price', 'Tagline', 'Description', 'ID']]
     matches_filtered_json = matches_filtered.to_json(orient='records')
+    print(matches_filtered_json)
     return matches_filtered_json
+    
     
 @app.route("/")
 def home():
@@ -36,7 +38,8 @@ def home():
 
 @app.route("/tshirts_and_tops")
 def episodes_search():
-    text = request.args.get("Name")
+    text = request.args.get("title")
+    print("Query: " + str(text))
     return json_search(text)
 
 if 'DB_NAME' not in os.environ:
