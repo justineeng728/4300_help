@@ -35,15 +35,16 @@
     <script>
 
         function answerBoxTemplate(title, titleDesc, image_url) {
-            return '
-        <div class = 'box'>
-            <div class = 'col'>
-            <div class='image'>
-                <img src='${image_url}' alt='${title}' />        
-            <div class='information'>
-                <h3 class='clothing-item'>${title}</h3>
-                <p class='clothing-desc'>${titleDesc}</p>
-            </div>`
+            return ' <div class = 'result-flex'>
+                        <div class = "result-box result-text"> ' + 
+                            <h3 class='clothing-item'>${title}</h3> + '
+                            <p class='clothing-desc'>${titleDesc}</p>
+                        </div>
+                        <div class="result-box result-square">
+                            <img class="result-img" src="${image_url}" />
+                        </div>  
+                    </div>
+                    <hr class="result-hr">
         }
 
         function sendFocus() {
