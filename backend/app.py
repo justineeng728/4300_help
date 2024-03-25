@@ -18,28 +18,25 @@ json_file_path = os.path.join(current_directory, 'init.json')
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
     data = json.load(file)
-    episodes_df = pd.DataFrame(data['episodes'])
-    reviews_df = pd.DataFrame(data['reviews'])
+    fashion_df = pd.DataFrame(data['tshirts_and_tops'])
 
 app = Flask(__name__)
 CORS(app)
 
 # Sample search using json with pandas
 def json_search(query):
-    matches = []
-    merged_df = pd.merge(episodes_df, reviews_df, left_on='id', right_on='id', how='inner')
-    matches = merged_df[merged_df['title'].str.lower().str.contains(query.lower())]
-    matches_filtered = matches[['title', 'descr', 'imdb_rating']]
+    matches = fashion_df[fashion_df['Name'].str.lower().str.contains(query.lower())]
+    matches_filtered = matches[['Name', 'Price', 'Tagline', 'Description', 'ID']]
     matches_filtered_json = matches_filtered.to_json(orient='records')
     return matches_filtered_json
-
+    
 @app.route("/")
 def home():
     return render_template('base.html',title="sample html")
 
-@app.route("/episodes")
+@app.route("/tshirts_and_tops")
 def episodes_search():
-    text = request.args.get("title")
+    text = request.args.get("Name")
     return json_search(text)
 
 if 'DB_NAME' not in os.environ:
