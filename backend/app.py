@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template, request
 from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 #from sklearn.feature_extraction.text import TfidfVectorizer
 #from sklearn.metrics.pairwise import cosine_similarity
@@ -22,16 +24,26 @@ with open(json_file_path, 'r') as file:
     data = json.load(file)
     fashion_df = pd.DataFrame(data['tshirts_and_tops'])
 
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(fashion_df['Description'])
+
 app = Flask(__name__)
 CORS(app)
 
 # Sample search using json with pandas
 def json_search(query):
-    matches = fashion_df[fashion_df['Description'].str.lower().str.contains(query.lower())]
-    matches_filtered = matches[['Name', 'Price', 'Tagline', 'Description', 'ID', 'Image']]
-    matches_filtered_json = matches_filtered.to_json(orient='records')
-    print(matches_filtered_json)
-    return matches_filtered_json
+    query_vector = vectorizer.transform([query])
+
+    # Calculate cosine similarity between the query vector and the TF-IDF matrix
+    cos_similarities = cosine_similarity(query_vector, tfidf_matrix)
+    indices = cos_similarities.argsort()[0][::-1]
+    
+    # Get the top 5 most similar items
+    top_matches_indices = indices[:5]
+    top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price', 'Tagline', 'Description', 'ID', 'Image']]
+    top_matches_json = top_matches.to_json(orient='records')
+    
+    return top_matches_json
     
     
 @app.route("/")
