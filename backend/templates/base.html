@@ -35,10 +35,10 @@
     <script>
 
         function answerBoxTemplate(title, titleDesc, image_url) {
-            return <div class = "result-flex">
-                        <div class = "result-box result-text">
-                            <h3 class='clothing-item'>${title}</h3>
-                            <p class='clothing-desc'>${titleDesc}</p>'
+            return ' <div class = 'result-flex'>
+                        <div class = "result-box result-text"> ' + 
+                            <h3 class='clothing-item'>${title}</h3> + '
+                            <p class='clothing-desc'>${titleDesc}</p>
                         </div>
                         <div class="result-box result-square">
                             <img class="result-img" src="${image_url}" />
