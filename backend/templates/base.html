@@ -35,16 +35,10 @@
     <script>
 
         function answerBoxTemplate(title, titleDesc, image_url) {
-            return '<div class = "result-flex">' + 
-                        '<div class = "result-box result-text">' + 
-                            '<h3 class='clothing-item'>${title}</h3>' 
-                            '<p class='clothing-desc'>${titleDesc}</p>'
-                        </div>
-                        '<div class="result-box result-square">'
-                            '<img class="result-img" src="${image_url}" />'
-                        </div>  
-                    </div>
-                    '<hr class="result-hr">';
+            return `<div class=''>
+                <h3 class='episode-title'>${title}</h3>
+                <p class='episode-desc'>${titleDesc}</p>
+            </div>`
         }
 
         function sendFocus() {
@@ -60,7 +54,7 @@
                 .then((data) => data.forEach(row => {
 
                     let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.Name, row.Description, row.image_URL)
+                    tempDiv.innerHTML = answerBoxTemplate(row.Name, row.Description)
                     document.getElementById("answer-box").appendChild(tempDiv)
                 }));
 
