@@ -112,6 +112,13 @@
   margin-top: 50px;
 }
 
+.display {
+    color: var(--theme-color-text);
+    text-align: center;
+    padding-bottom: 24px;
+    font-size: 14px;
+}
+
 .result {
     padding: 12px;
 }
