@@ -1,64 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <title>{% block title %}{% endblock %} - Flaskr</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
 <body>
-    <div class="full-body-container">
-        <div class="top-text">
-            <div class="google-colors">
-                <h1 class = upstyle-letter id="upstyle-w">U</h1>
-                <h1 class = upstyle-letter id="upstyle-w">P</h1>
-                <h1 class = upstyle-letter id="upstyle-w">S</h1>
-                <h1 class = upstyle-letter id="upstyle-w">T</h1>
-                <h1 class = upstyle-letter id="upstyle-w">Y</h1>
-                <h1 class = upstyle-letter id="upstyle-w">L</h1>
-                <h1 class = upstyle-letter id="upstyle-w">E</h1>
-            </div>
-            <!-- Adding GIFs below the UPSTYLE text -->
-            <div class="gif-container">
-                <img src="https://media.glamour.com/photos/5695d2c093ef4b09520ef0d1/master/w_1600,c_limit/fashion-2013-03-0304-chanel.gif">
-                <img src="https://media.glamour.com/photos/5695d2c1d9dab9ff41b4710d/master/w_1600,c_limit/fashion-2013-03-0304-chloe.gif}">
-            </div>
-            <div class="input-box" onclick="sendFocus()">
-                <img src="{{ url_for('static', filename='images/mag.png') }}" />
-                <input placeholder="Search for an aesthetic" id="filter-text-val" onkeyup="filterText()">
-            </div>
-        </div>
-        <div id="answer-box">
-
-        </div>
+  <div class="full-body-container">
+    <div class="top-text">
+      <div class="google-colors">
+        <h1 class="upstyle-letter" id="upstyle-w">U</h1>
+        <h1 class="upstyle-letter" id="upstyle-w">P</h1>
+        <h1 class="upstyle-letter" id="upstyle-w">S</h1>
+        <h1 class="upstyle-letter" id="upstyle-w">T</h1>
+        <h1 class="upstyle-letter" id="upstyle-w">Y</h1>
+        <h1 class="upstyle-letter" id="upstyle-w">L</h1>
+        <h1 class="upstyle-letter" id="upstyle-w">E</h1>
+      </div>
+      <!-- Adding GIFs below the UPSTYLE text -->
+      <div class="gif-container">
+        <img
+          src="https://media.glamour.com/photos/5695d2c093ef4b09520ef0d1/master/w_1600,c_limit/fashion-2013-03-0304-chanel.gif"
+        />
+        <img
+          src="https://media.glamour.com/photos/5695d2c1d9dab9ff41b4710d/master/w_1600,c_limit/fashion-2013-03-0304-chloe.gif}"
+        />
+      </div>
+      <div class="input-box" onclick="sendFocus()">
+        <img src="{{ url_for('static', filename='images/mag.png') }}" />
+        <input
+          placeholder="Search for an aesthetic"
+          id="filter-text-val"
+          onkeyup="filterText()"
+        />
+      </div>
     </div>
+    <div id="answer-box"></div>
+  </div>
 
-    <script>
-
-        function answerBoxTemplate(title, titleDesc) {
-            return `<div class='information'>
+  <script>
+    function answerBoxTemplate(title, titleDesc, image) {
+      let imageHTML = "";
+      if (image && image.trim() !== "") {
+        const imageStyle = "max-width: 400px; max-height: 300px;";
+        imageHTML = `<img src="${image}" alt="${title}" class="clothing-image" style="${imageStyle}">`;
+      }
+      return `<div class='information'>
                 <h3 class='clothing-item'>${title}</h3>
                 <p class='clothing-desc'>${titleDesc}</p>
-            </div>`
-        }
+                ${imageHTML}
+            </div>`;
+    }
 
-        function sendFocus() {
-            document.getElementById('filter-text-val').focus()
-        }
+    function sendFocus() {
+      document.getElementById("filter-text-val").focus();
+    }
 
-        function filterText() {
-            document.getElementById("answer-box").innerHTML = ""
-            console.log(document.getElementById("filter-text-val").value)
-            fetch("/tshirts_and_tops?" + new URLSearchParams({ 
-                title: document.getElementById("filter-text-val").value }).toString())
-                .then((response) => response.json())
-                .then((data) => data.forEach(row => {
-
-                    let tempDiv = document.createElement("div")
-                    tempDiv.innerHTML = answerBoxTemplate(row.Name, row.Description)
-                    document.getElementById("answer-box").appendChild(tempDiv)
-                }));
-
-        }
-
-    </script>
+    function filterText() {
+      document.getElementById("answer-box").innerHTML = "";
+      console.log(document.getElementById("filter-text-val").value);
+      fetch(
+        "/tshirts_and_tops?" +
+          new URLSearchParams({
+            title: document.getElementById("filter-text-val").value,
+          }).toString()
+      )
+        .then((response) => response.json())
+        .then((data) =>
+          data.forEach((row) => {
+            let tempDiv = document.createElement("div");
+            tempDiv.innerHTML = answerBoxTemplate(
+              row.Name,
+              row.Description,
+              row.Image
+            );
+            document.getElementById("answer-box").appendChild(tempDiv);
+          })
+        );
+    }
+  </script>
 </body>
