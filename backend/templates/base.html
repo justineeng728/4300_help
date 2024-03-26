@@ -44,10 +44,12 @@
         const imageStyle = "max-width: 400px; max-height: 300px;";
         imageHTML = `<img src="${image}" alt="${title}" class="clothing-image" style="${imageStyle}">`;
       }
-      return `<div class='information'>
-                <h3 class='clothing-item'>${title}</h3>
+      return `<h3 class='clothing-item'>${title}</h3>
+           <div class='information'>
+                <div class="image-container">
+                   ${imageHTML}  
+                </div>
                 <p class='clothing-desc'>${titleDesc}</p>
-                ${imageHTML}
             </div>`;
     }
 
