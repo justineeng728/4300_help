@@ -26,7 +26,7 @@ CORS(app)
 # Sample search using json with pandas
 def json_search(query):
     matches = fashion_df[fashion_df['Name'].str.lower().str.contains(query.lower())]
-    matches_filtered = matches[['Name', 'Price', 'Tagline', 'Description', 'ID', 'image URL']]
+    matches_filtered = matches[['Name', 'Price', 'Tagline', 'Description', 'ID']]
     matches_filtered_json = matches_filtered.to_json(orient='records')
     print(matches_filtered_json)
     return matches_filtered_json
