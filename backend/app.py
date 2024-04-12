@@ -5,6 +5,7 @@ from flask_cors import CORS
 from helpers.MySQLDatabaseHandler import MySQLDatabaseHandler
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.decomposition import TruncatedSVD
 import pandas as pd
 #from sklearn.feature_extraction.text import TfidfVectorizer
 #from sklearn.metrics.pairwise import cosine_similarity
@@ -27,20 +28,26 @@ with open(json_file_path, 'r') as file:
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(fashion_df['Description'])
 
+svd = TruncatedSVD(n_components=3) 
+tfidf_svd = svd.fit_transform(tfidf_matrix)
+
 app = Flask(__name__)
 CORS(app)
 
-# Sample search using json with pandas
-def json_search(query):
+def svd_search(query):
     query_vector = vectorizer.transform([query])
+    query_vector_svd = svd.transform(query_vector)
 
-    cos_similarities = cosine_similarity(query_vector, tfidf_matrix)
+    cos_similarities = cosine_similarity(query_vector_svd, tfidf_svd)
+    print("Cosine Similarities:", cos_similarities)
+
     indices = cos_similarities.argsort()[0][::-1]
-    
+    print("Indices:", indices)
+
     top_matches_indices = indices[:5]
     top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price', 'Tagline', 'Description', 'ID', 'Image']]
     top_matches_json = top_matches.to_json(orient='records')
-    
+
     return top_matches_json
     
     
@@ -52,7 +59,7 @@ def home():
 def episodes_search():
     text = request.args.get("title")
     print("Query: " + str(text))
-    return json_search(text)
+    return svd_search(text)
 
 if 'DB_NAME' not in os.environ:
     app.run(debug=True,host="0.0.0.0",port=5000)
