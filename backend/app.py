@@ -52,15 +52,13 @@ def svd_search(query):
     query_vector_svd = svd.transform(query_vector)
 
     cos_similarities = cosine_similarity(query_vector_svd, svd_fashion)
-    print("Cosine Similarities:", cos_similarities)
 
     indices = cos_similarities.argsort()[0][::-1]
-    print("Indices:", indices)
 
     top_matches_indices = indices[:5]
-    top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price','Description','Image']]
+    top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price', 'Description', 'Item_URL', 'Image_URL', 'Stars']]
     top_matches_json = top_matches.to_json(orient='records')
-
+    print(top_matches_json)
     return top_matches_json
     
     
