@@ -30,15 +30,12 @@ with open(aesthetics,'r') as file:
     data2 = json.load(file)
     aesthetics_df = pd.DataFrame(data2['aesthetics'])
 
-with open(merged,'r') as file:
-    data3 =json.load(file)
-    merged_df = pd.DataFrame(data3)
 
 with open()
 
 #all_fashion = pd.concat([fashion_df, high_knit_df])
-split_index = len(all_fashion)
-combined_df = pd.concat([merged, aesthetics_df])
+split_index = len(fashion_df)
+combined_df = pd.concat([fashion_df, aesthetics_df])
 
 
 vectorizer = TfidfVectorizer()
