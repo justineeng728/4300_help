@@ -20,7 +20,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 # Specify the path to the JSON file relative to the current script
 json_file_path = os.path.join(current_directory, 'init.json')
 aesthetics = os.path.join(current_directory, 'aesthetics.json')
-merged = os.path.join(current_directory, 'merged_output.json')
+
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
     data = json.load(file)
@@ -33,7 +33,6 @@ with open(aesthetics,'r') as file:
 
 with open()
 
-#all_fashion = pd.concat([fashion_df, high_knit_df])
 split_index = len(fashion_df)
 combined_df = pd.concat([fashion_df, aesthetics_df])
 
