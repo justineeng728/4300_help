@@ -27,8 +27,8 @@ with open(json_file_path, 'r') as file:
     fashion_df = pd.DataFrame(data['tshirts_and_tops'])
 
 with open(aesthetics,'r') as file:
-    data = json.load(file)
-    aesthetics_df = pd.DataFrame(data['aesthetics'])
+    data2 = json.load(file)
+    aesthetics_df = pd.DataFrame(data2['aesthetics'])
 
 split_index = len(fashion_df)
 combined_df = pd.concat([fashion_df, aesthetics_df])
@@ -39,8 +39,8 @@ tfidf_matrix = vectorizer.fit_transform(combined_df['Description'])
 svd = TruncatedSVD(n_components=3) 
 tfidf_svd = svd.fit_transform(tfidf_matrix)
 
-svd_fashion =[:split_index]
-svd_aesthetics = [split_index:]
+svd_fashion =tfidf_svd[:split_index]
+svd_aesthetics = tfidf_svd[split_index:]
 
 app = Flask(__name__)
 CORS(app)
@@ -49,7 +49,7 @@ def svd_search(query):
     query_vector = vectorizer.transform([query])
     query_vector_svd = svd.transform(query_vector)
 
-    cos_similarities = cosine_similarity(query_vector_svd, tfidf_svd)
+    cos_similarities = cosine_similarity(query_vector_svd, svd_fashion)
     print("Cosine Similarities:", cos_similarities)
 
     indices = cos_similarities.argsort()[0][::-1]
