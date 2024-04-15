@@ -46,9 +46,17 @@ svd_aesthetics = tfidf_svd[split_index:]
 
 app = Flask(__name__)
 CORS(app)
+    
+@app.route("/")
+def home():
+    return render_template('base.html',title="sample html")
 
-def svd_search(query):
-    query_vector = vectorizer.transform([query])
+@app.route("/tshirts_and_tops")
+def svd_search():
+    text = request.args.get("title")
+    print("Query: " + str(text))
+    
+    query_vector = vectorizer.transform([text])
     query_vector_svd = svd.transform(query_vector)
 
     cos_similarities = cosine_similarity(query_vector_svd, svd_fashion)
@@ -59,18 +67,8 @@ def svd_search(query):
     top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price', 'Description', 'Item_URL', 'Image_URL', 'Stars']]
     top_matches_json = top_matches.to_json(orient='records')
     print(top_matches_json)
+    
     return top_matches_json
-    
-    
-@app.route("/")
-def home():
-    return render_template('base.html',title="sample html")
-
-@app.route("/tshirts_and_tops")
-def episodes_search():
-    text = request.args.get("title")
-    print("Query: " + str(text))
-    return svd_search(text)
 
 if 'DB_NAME' not in os.environ:
     app.run(debug=True,host="0.0.0.0",port=5000)
