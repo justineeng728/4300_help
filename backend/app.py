@@ -20,7 +20,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 # Specify the path to the JSON file relative to the current script
 json_file_path = os.path.join(current_directory, 'init.json')
 aesthetics = os.path.join(current_directory, 'aesthetics.json')
-high_knitwear = os.path.join(current_directory, 'high_knit.json')
+merged = os.path.join(current_directory, 'merged_output.json')
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
     data = json.load(file)
@@ -30,15 +30,15 @@ with open(aesthetics,'r') as file:
     data2 = json.load(file)
     aesthetics_df = pd.DataFrame(data2['aesthetics'])
 
-with open(high_knitwear,'r') as file:
+with open(merged,'r') as file:
     data3 =json.load(file)
-    high_knit_df = pd.DataFrame(data3['high_knitwear'])
+    merged_df = pd.DataFrame(data3)
 
 with open()
 
-all_fashion = pd.concat([fashion_df, high_knit_df])
+#all_fashion = pd.concat([fashion_df, high_knit_df])
 split_index = len(all_fashion)
-combined_df = pd.concat([all_fashion, aesthetics_df])
+combined_df = pd.concat([merged, aesthetics_df])
 
 
 vectorizer = TfidfVectorizer()
