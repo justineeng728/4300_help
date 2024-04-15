@@ -20,7 +20,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 # Specify the path to the JSON file relative to the current script
 json_file_path = os.path.join(current_directory, 'init.json')
 aesthetics = os.path.join(current_directory, 'aesthetics.json')
-
+high_knitwear = os.path.join(current_directory, 'high_knit.json')
 # Assuming your JSON data is stored in a file named 'init.json'
 with open(json_file_path, 'r') as file:
     data = json.load(file)
@@ -30,8 +30,16 @@ with open(aesthetics,'r') as file:
     data2 = json.load(file)
     aesthetics_df = pd.DataFrame(data2['aesthetics'])
 
-split_index = len(fashion_df)
-combined_df = pd.concat([fashion_df, aesthetics_df])
+with open(high_knitwear,'r') as file:
+    data3 =json.load(file)
+    high_knit_df = pd.DataFrame(data3['high_knitwear'])
+
+with open()
+
+all_fashion = pd.concat([fashion_df, high_knit_df])
+split_index = len(all_fashion)
+combined_df = pd.concat([all_fashion, aesthetics_df])
+
 
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(combined_df['Description'])
@@ -56,7 +64,7 @@ def svd_search(query):
     print("Indices:", indices)
 
     top_matches_indices = indices[:5]
-    top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price', 'Tagline', 'Description', 'ID', 'Image']]
+    top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price','Description','Image']]
     top_matches_json = top_matches.to_json(orient='records')
 
     return top_matches_json
