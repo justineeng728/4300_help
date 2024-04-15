@@ -38,7 +38,7 @@ combined_df = pd.concat([fashion_df, aesthetics_df])
 vectorizer = TfidfVectorizer()
 tfidf_matrix = vectorizer.fit_transform(combined_df['Description'])
 
-svd = TruncatedSVD(n_components=3) 
+svd = TruncatedSVD(n_components=10) 
 tfidf_svd = svd.fit_transform(tfidf_matrix)
 
 svd_fashion =tfidf_svd[:split_index]
