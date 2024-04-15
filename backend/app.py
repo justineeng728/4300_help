@@ -31,8 +31,6 @@ with open(aesthetics,'r') as file:
     aesthetics_df = pd.DataFrame(data2['aesthetics'])
 
 
-with open()
-
 split_index = len(fashion_df)
 combined_df = pd.concat([fashion_df, aesthetics_df])
 
