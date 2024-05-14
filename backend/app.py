@@ -41,6 +41,7 @@ tfidf_matrix = vectorizer.fit_transform(combined_df['Description'])
 svd = TruncatedSVD(n_components=46) 
 tfidf_svd = svd.fit_transform(tfidf_matrix)
 
+
 svd_fashion =tfidf_svd[:split_index]
 svd_aesthetics = tfidf_svd[split_index:]
 
@@ -65,9 +66,15 @@ def svd_search():
 
     top_matches_indices = indices[:5]
     top_matches = fashion_df.iloc[top_matches_indices][['Name', 'Price', 'Description', 'Item_URL', 'Image_URL', 'Stars']]
-    top_matches_json = top_matches.to_json(orient='records')
-    print(top_matches_json)
     
+    svd_dimensions = svd_fashion[top_matches_indices, :5]
+    svd_dimensions_list = svd_dimensions.tolist()
+
+    svd_dimensions_list = [[100 * abs(x / 2 if x < 0 else x) for x in sublist] for sublist in svd_dimensions_list]
+
+    top_matches['SVD_Dimensions'] = svd_dimensions_list
+    top_matches_json = top_matches.to_json(orient='records')
+
     return top_matches_json
 
 if 'DB_NAME' not in os.environ:

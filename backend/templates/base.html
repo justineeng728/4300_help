@@ -38,36 +38,54 @@
   </div>
 
   <script>
-    function answerBoxTemplate(title, price, titleDesc, url, image, stars) {
+    function answerBoxTemplate(
+      title,
+      price,
+      titleDesc,
+      url,
+      image,
+      stars,
+      svdDimensions
+    ) {
       let imageHTML = "";
       if (image && image.trim() !== "") {
         const imageStyle = "max-width: 400px; max-height: 300px;";
         imageHTML = `<a href="${url}" target="_blank"><img src="${image}" alt="${title}" class="clothing-image" style="${imageStyle}"></a>`;
       }
-      const nameWithPrice = `${title} - ${price}`; 
+      const nameWithPrice = `${title} - ${price}`;
+
+      let svdHTML = '';
+      svdHTML += `<br><br>Casual Dimension: ${svdDimensions[0].toFixed(2)}%<br>`;
+      svdHTML += `Pants Dimension: ${svdDimensions[1].toFixed(2)}%<br>`;
+      svdHTML += `Dress Dimension: ${svdDimensions[2].toFixed(2)}%<br>`;
+      svdHTML += `Denim Dimension: ${svdDimensions[3].toFixed(2)}%<br>`;
+      svdHTML += `Sportswear Dimension: ${svdDimensions[4].toFixed(2)}%<br>`;
+      
 
       return `<a href="${url}" target="_blank">
                 <div style="display: flex; justify-content: space-between;">
                   <h3 class='clothing-item'>${nameWithPrice}</h3>
-                  <div style="align-self: center;">${generateStarRating(stars)}</div>
+                  <div style="align-self: center;">${generateStarRating(
+                    stars
+                  )}</div>
                 </div>
               </a>
               <div class='information'>
                 <div class="image-container">
                   ${imageHTML}  
                 </div>
-                <p class='clothing-desc'>${titleDesc}</p>
+                <p class='clothing-desc'>${titleDesc} \n${svdHTML}</p>
               </div>`;
-}
+    }
 
-      function generateStarRating(stars) {
-        const starIcon = "&#9733;";
-        let starsHTML = "";
-        for (let i = 0; i < stars; i++) {
-          starsHTML += `<span>${starIcon}</span>`;
-        }
-        return starsHTML;
+    function generateStarRating(stars) {
+      const starIcon = "&#9733;";
+      let starsHTML = "";
+      for (let i = 0; i < stars; i++) {
+        starsHTML += `<span>${starIcon}</span>`;
       }
+      return starsHTML;
+    }
 
     function sendFocus() {
       document.getElementById("filter-text-val").focus();
@@ -92,7 +110,8 @@
               row.Description,
               row.Item_URL,
               row.Image_URL,
-              row.Stars
+              row.Stars,
+              row.SVD_Dimensions
             );
             document.getElementById("answer-box").appendChild(tempDiv);
           })
